@@ -1,18 +1,21 @@
 (function() {
 
-    function div(cssClasses) {
+    function div(id, cssClasses) {
         var elem = $('<div/>');
+        if (id) {
+            elem.attr("id", id);
+        }
         if (cssClasses) {
             elem.addClass(cssClasses);
         }
         return elem;
     }
 
-    function stepDiv(cssClasses) {
+    function stepDiv(id, cssClasses) {
         if (cssClasses) {
-            return div("step " + cssClasses);
+            return div(id, "step " + cssClasses);
         } else {
-            return div("step");
+            return div(id, "step");
         }
     }
 
@@ -103,8 +106,7 @@
         var slides = [];
 
         this.createUIElement = function() {
-            var elem = div();
-            elem.attr("id", "impress");
+            var elem = div("impress");
 
             $.each(slides, function(idx, slide) {
                 var slideElem = slide.createUIElement();
@@ -133,11 +135,12 @@
         var presentation = new Presentation();
 
         var slide = new Slide("test");
-        slide.setPosition(100, 100, 0);
+        slide.setPosition(10, 10, 0);
         presentation.addSlide(slide);
 
         slide = new Slide("test2");
-        slide.setPosition(2000, 1000, 300);
+        slide.setPosition(100, 80, 300);
+        slide.setRotation(0, 0, 180);
         presentation.addSlide(slide);
         //alert(presentation.getSlideAt(0).getPosition().y);
 
