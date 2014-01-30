@@ -181,6 +181,10 @@
             });
             return div;
         };
+
+        this.start = function() {
+            // animate the elements!
+        };
     }
 
     function Sprite() {
@@ -198,13 +202,19 @@
         var presentation = new Presentation();
 
         var slide = new Slide("test");
-        slide.setPosition(10, 10, -800);
+        slide.setPosition(0, 0, 0);
         presentation.addSlide(slide);
 
         slide = new Slide("test2");
-        slide.setPosition(100, 80, 600);
-        slide.setRotation(0, 0, 180);
+        slide.setPosition(100, 80, -800);
+        slide.setRotation(0, 20, 100);
         presentation.addSlide(slide);
+
+        slide = new Slide("test3");
+        slide.setPosition(10, 10, -2000);
+        slide.setRotation(0, 20, 200);
+        presentation.addSlide(slide);
+
 
         var elem = presentation.createUIElement();
         body.append(elem);
