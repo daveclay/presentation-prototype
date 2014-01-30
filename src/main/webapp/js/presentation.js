@@ -15,6 +15,15 @@
                 return this;
             };
 
+            this.stepDiv = function() {
+                if (css == null) {
+                    this.css("step");
+                } else {
+                    this.css("step " + this.css);
+                }
+                return this.div();
+            };
+
             this.div = function() {
                 return this.createElem('div');
             };
@@ -46,14 +55,6 @@
 
     function div(id, cssClasses) {
         return elementFactory().id(id).css(cssClasses).div();
-    }
-
-    function stepDiv(id, cssClasses) {
-        if (cssClasses) {
-            return div(id, "step " + cssClasses);
-        } else {
-            return div(id, "step");
-        }
     }
 
     function Vec3(_x, _y, _z) {
@@ -101,7 +102,7 @@
         };
 
         this.createUIElement = function() {
-            var uiElem = stepDiv(id);
+            var uiElem = elementFactory().id(id).stepDiv();
             uiElem.text("hi there.");
             position.apply(uiElem);
             rotation.apply(uiElem);
@@ -143,7 +144,7 @@
         var slides = [];
 
         this.createUIElement = function() {
-            var elem = div("impress");
+            var elem = elementFactory().id("impress").div();
 
             $.each(slides, function(idx, slide) {
                 var slideElem = slide.createUIElement();
@@ -173,7 +174,7 @@
         }
 
         this.createUIElement = function() {
-            var div = div(null, "explosion");
+            var div = elementFactory().css("explosion").div();
             $.each(sprites, function(index, sprite) {
                 var elem = sprite.createUIElement();
                 div.append(elem);
@@ -185,7 +186,7 @@
     function Sprite() {
 
         this.createUIElement = function() {
-            var div = div(null, "sprite");
+            var div = elementFactory().css("sprite").div();
             div.text("+");
             return div;
         }
