@@ -1,14 +1,51 @@
 (function() {
 
+    var elementFactory = (function() {
+        function ElemBuilder() {
+            var id = null;
+            var css = null;
+
+            this.id = function(_id) {
+                id = _id;
+                return this;
+            };
+
+            this.css = function(_css) {
+                css = _css;
+                return this;
+            };
+
+            this.div = function() {
+                return this.createElem('div');
+            };
+
+            this.span = function() {
+                return this.createElem('span');
+            };
+
+            this.createElem = function(name) {
+                var elem = $('<' + name + "'/>");
+                this.addAttributes(elem);
+                return elem;
+            };
+
+            this.addAttributes = function(elem) {
+                if (id) {
+                    elem.attr("id", id);
+                }
+                if (css) {
+                    elem.addClass(css);
+                }
+            };
+        }
+
+        return function() {
+            return new ElemBuilder();
+        };
+    })();
+
     function div(id, cssClasses) {
-        var elem = $('<div/>');
-        if (id) {
-            elem.attr("id", id);
-        }
-        if (cssClasses) {
-            elem.addClass(cssClasses);
-        }
-        return elem;
+        return elementFactory().id(id).css(cssClasses).div();
     }
 
     function stepDiv(id, cssClasses) {
@@ -129,20 +166,44 @@
         };
     }
 
+    function Explosion(numberOfSprites) {
+        var sprites = [];
+        for (var i = 0; i < numberOfSprites; i++) {
+            sprites[i] = new Sprite();
+        }
+
+        this.createUIElement = function() {
+            var div = div(null, "explosion");
+            $.each(sprites, function(index, sprite) {
+                var elem = sprite.createUIElement();
+                div.append(elem);
+            });
+            return div;
+        };
+    }
+
+    function Sprite() {
+
+        this.createUIElement = function() {
+            var div = div(null, "sprite");
+            div.text("+");
+            return div;
+        }
+    }
+
     $(document).ready(function() {
         var body = $('body');
 
         var presentation = new Presentation();
 
         var slide = new Slide("test");
-        slide.setPosition(10, 10, 0);
+        slide.setPosition(10, 10, -800);
         presentation.addSlide(slide);
 
         slide = new Slide("test2");
-        slide.setPosition(100, 80, 300);
+        slide.setPosition(100, 80, 600);
         slide.setRotation(0, 0, 180);
         presentation.addSlide(slide);
-        //alert(presentation.getSlideAt(0).getPosition().y);
 
         var elem = presentation.createUIElement();
         body.append(elem);
